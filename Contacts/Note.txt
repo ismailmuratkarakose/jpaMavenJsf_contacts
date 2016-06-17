@@ -1,4 +1,7 @@
 Bu bir Maven-Jpa frameworkleri kullanýlarak hazýrlanmýþ Jsf(Primefaces) arayüzlü bir programdýr.
+Bu uygulama maven aracýlýðýyla kütüphaneleri daha kolay eriþmek için kullandým. Ayný zamanda JPA projesi istendiði
+için object relational model olan hibernate tercih ettim. Daha önce kullanmýþ olduðum ve hakim olduðum içinde jsf tercihimi
+primefacesden yana kullandým.
 
 
 CREATE TABLE CONTACT (
