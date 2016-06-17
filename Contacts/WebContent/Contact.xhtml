@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd" >
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+
+<h:body>
+	<h:form id="form">
+		<p:growl id="msgs" showDetail="true" />
+		<p:dataTable id="contactTable" var="contact"
+			selection="#{contactBean.selectedContact}"
+			style="font:12px Arial, serif;" value="#{contactBean.contacts}"
+			selectionMode="single" rowKey="#{contact.contactid}" rows="10"
+			paginator="true" paginatorPosition="bottom">
+
+			<f:facet name="header">Contacts</f:facet>
+			<p:ajax event="rowSelect" listener="#{contactBean.onRowSelect}"
+				update=":form:msgs" />
+			<p:ajax event="rowUnselect" listener="#{contactBean.onRowUnselect}"
+				update=":form:msgs" />
+
+			<p:column headerText="Name" filterBy="#{contact.username}"
+				filterMatchMode="contains">
+				<h:outputText value="#{contact.username}" />
+			</p:column>
+			<p:column headerText="Last Name" filterBy="#{contact.usersurname}"
+				filterMatchMode="contains">
+				<h:outputText value="#{contact.usersurname}" />
+			</p:column>
+			<p:column headerText="Email" filterBy="#{contact.useremail}"
+				filterMatchMode="contains">
+				<h:outputText value="#{contact.useremail}" />
+			</p:column>
+			<p:column headerText="Adress">
+				<h:outputText value="#{contact.useraddres}" />
+			</p:column>
+
+			<f:facet name="footer">
+				<p:commandButton process="contactTable" update=":form:contactDetail"
+					icon="ui-icon-search" value="View"
+					oncomplete="PF('contactDialog').show()" />
+				<p:commandButton value="New" icon="ui-icon-refresh"
+					oncomplete="PF('newContactDialog').show()" />
+				<p:commandButton value="Delete" icon="ui-icon-close"
+					update=":form:contactTable" process="contactTable"
+					actionListener="#{contactBean.deleteContact}" />
+			</f:facet>
+
+		</p:dataTable>
+		<p:dialog header="Contact Info" widgetVar="contactDialog" modal="true"
+			style="font:12px Arial, serif;" showEffect="fade" hideEffect="fade"
+			resizable="false">
+			<p:outputPanel id="contactDetail" style="text-align:left;">
+				<p:panelGrid columns="2" columnClasses="label,value">
+
+					<h:outputText value="First name:" />
+					<p:inputText value="#{contactBean.selectedContact.username}" />
+
+					<h:outputText value="Last name" />
+					<p:inputText value="#{contactBean.selectedContact.usersurname}" />
+
+					<h:outputText value="Address" />
+					<p:inputText value="#{contactBean.selectedContact.useraddres}" />
+
+					<h:outputText value="Phones" />
+					<p:selectOneMenu>
+						<f:selectItem itemLabel="Phones" noSelectionOption="true" />
+						<f:selectItems value="#{contactBean.phonesStr}" />
+					</p:selectOneMenu>
+
+				</p:panelGrid>
+			</p:outputPanel>
+			<f:facet name="footer">
+				<p:commandButton value="Update" icon="ui-icon-disk" />
+				<p:commandButton value="Cancel" icon="ui-icon-close"
+					oncomplete="PF('contactDialog').hide()" />
+			</f:facet>
+		</p:dialog>
+		<p:dialog header="New Contact" widgetVar="newContactDialog"
+			modal="true" style="font:12px Arial, serif;" showEffect="fade"
+			hideEffect="fade" resizable="false">
+			<p:outputPanel id="newContactDetail" style="text-align:left;">
+				<p:panelGrid columns="2" columnClasses="label,value">
+
+					<h:outputText value="First name:" />
+					<p:inputText value="#{contactBean.username}" />
+
+					<h:outputText value="Last name" />
+					<p:inputText value="#{contactBean.usersurname}" />
+
+					<h:outputText value="Address" />
+					<p:inputText value="#{contactBean.useraddress}" />
+
+					<h:outputText value="Mail" />
+					<p:inputText value="#{contactBean.useremail}" />
+
+					<h:outputText value="Phones" />
+					<p:inputText value="#{contactBean.userphone}" />
+
+				</p:panelGrid>
+			</p:outputPanel>
+
+			<f:facet name="footer">
+				<p:commandButton value="Save" icon="ui-icon-disk"
+					update=":form:msgs"
+					actionListener="#{contactBean.addContact}" />
+				<p:commandButton value="Cancel" icon="ui-icon-close"
+					oncomplete="PF('newContactDialog').hide()" />
+			</f:facet>
+		</p:dialog>
+
+
+	</h:form>
+
+</h:body>
+</html>
